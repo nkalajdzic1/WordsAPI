@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 
-import { ENV } from "@config/environment";
+import { ENV } from "@config/index";
+import { Logger } from "@shared/classes/index";
 
 const app: Application = express();
 
@@ -9,5 +10,5 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.listen(ENV.PORT, () => {
-  console.log(`[server]: Server is running at port ${ENV.PORT}`);
+  Logger.info(`Server is running at port ${ENV.PORT}`);
 });
