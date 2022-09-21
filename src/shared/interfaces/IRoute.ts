@@ -1,4 +1,4 @@
-import { REQUEST_METHODS } from "@shared/constants/index";
+import { REQUEST_METHODS } from "@constants/index";
 
 const requests = Object.values(REQUEST_METHODS);
 type requestMethods = typeof requests[number];

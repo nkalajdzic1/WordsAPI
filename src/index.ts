@@ -1,18 +1,23 @@
 // import metadata for custom decorators
 import "reflect-metadata";
 
-import express, { Application } from "express";
+import { ENV } from "@config/index";
+import { Logger, Injector, App } from "@classes/index";
+import { swaggerOptions } from "@constants/index";
 
-import { ENV, Injector } from "@config/index";
-import { Logger } from "@shared/classes/index";
+const app = App.getInstance();
 
-// create an instance of an server
-const app: Application = express();
+// inject configuration (enabling request body, cors, etc.)
+Injector.injectConfig(app);
 
 // inject all controllers
 Injector.injectControllers(app, `/api/${ENV.API_VERSION}`);
 
+// inject swagger, must come after injecting the controllers
+// to configure the docs properly
+Injector.injectSwagger(app, swaggerOptions);
+
 // start server
-app.listen(ENV.PORT, () => {
-  Logger.info(`Server is running at port ${ENV.PORT}`);
-});
+app.listen(ENV.PORT, () =>
+  Logger.info(`Server is running at port ${ENV.PORT}`)
+);

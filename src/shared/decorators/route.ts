@@ -1,7 +1,7 @@
-import { REQUEST_METHODS } from "@shared/constants/index";
-import { IRoute } from "@shared/interfaces/index";
+import { REQUEST_METHODS } from "@constants/index";
+import { IRoute } from "@interfaces/index";
 
-export const Get = (path: string): any => {
+const createRouteDecorator = (requestMethod: string, path: string) => {
   // `target` equals our class, `propertyKey` equals our decorated method name
   return (target: any, propertyKey: string): void => {
     // In case this is the first route to be registered the `routes` metadata is likely to be undefined at this point.
@@ -17,10 +17,29 @@ export const Get = (path: string): any => {
     ) as Array<IRoute>;
 
     routes.push({
-      requestMethod: REQUEST_METHODS.GET,
+      requestMethod,
       path,
       methodName: propertyKey,
     });
     Reflect.defineMetadata("routes", routes, target.constructor);
   };
 };
+
+//  route decorators
+export const Get = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.GET, path);
+
+export const Post = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.POST, path);
+
+export const Put = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.PUT, path);
+
+export const Patch = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.PATCH, path);
+
+export const Delete = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.DELETE, path);
+
+export const Options = (path: string): any =>
+  createRouteDecorator(REQUEST_METHODS.OPTIONS, path);

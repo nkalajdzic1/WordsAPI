@@ -1,17 +1,25 @@
-import { Application, Request, Response } from "express";
+import { Application, json as jsonBodyParser } from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 // import all controllers from the controllers folder
 // IMPORTANT NOTE: all controllers need to be in the controllers folder
 // for this folder architecture
 import * as controllers from "@controllers/index";
-import { IRoute } from "@shared/interfaces/index";
+import { IRoute } from "@interfaces/index";
+import { ENV } from "@config/index";
 
-// TODO: customize the injector more to enable middlewares and etc.
+// class to inject all the configuration to the server (swagger, routes, etc.)
 export class Injector {
+  /**
+   * @description
+   * @param {string} routePrefix
+   * @returns {void}
+   */
   public static injectControllers = (
     app: Application,
     routePrefix: string = ""
-  ) => {
+  ): void => {
     Object.values(controllers).forEach((controller) => {
       // instantiated class
       const instance = new controller();
@@ -24,12 +32,34 @@ export class Injector {
       routes.forEach((route) => {
         (app as any)[route.requestMethod](
           `${routePrefix}${prefix}${route.path}`,
-          (req: Request, res: Response) => {
+          (...params: any[]) => {
             // Execute our method for this path and pass our express request and response object.
-            (instance as any)[route.requestMethod](req, res);
+            (instance as any)[route.requestMethod](...params);
           }
         );
       });
     });
+  };
+
+  /**
+   * @description
+   * @param {Object} options
+   * @returns {void}
+   */
+  public static injectSwagger = (app: Application, options: Object): void => {
+    // create documentation
+    const openapiSpecification = swaggerJsDoc(options);
+
+    // inject swagger to app
+    app.use(
+      `/swagger/${ENV.API_VERSION}`,
+      swaggerUi.serve,
+      swaggerUi.setup(openapiSpecification)
+    );
+  };
+
+  public static injectConfig = (app: Application) => {
+    // enable request body
+    app.use(jsonBodyParser());
   };
 }
