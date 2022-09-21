@@ -8,6 +8,7 @@ export class WordsController {
   private wordsService: WordsService = new WordsService();
 
   /**
+   * @description get list of words endpoint
    * @param {Request} _req express http request
    * @param {Response} res express htpp response
    * @returns {Object} list of words
@@ -27,12 +28,12 @@ export class WordsController {
    *         description: Internal Server error
    */
   @Get("/")
-  public get = (_req: Request, res: Response): Object =>
-    res.json({
-      words: ["something"],
-    });
+  public getWords = (_req: Request, res: Response): Object => {
+    return res.json([]);
+  };
 
   /**
+   * @description create a word endpoint
    * @param {Request} _req express http request
    * @param {Response} res express htpp response
    * @returns {Object} created word
@@ -58,9 +59,9 @@ export class WordsController {
    *         description: Internal Server error
    */
   @Post("/")
-  public post = (_req: Request, res: Response): Object => {
+  public createWord = (_req: Request, res: Response): Object => {
     return res.json({
-      number: this.wordsService.getNum(),
+      number: this.wordsService.create(),
     });
   };
 }

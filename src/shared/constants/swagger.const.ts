@@ -1,5 +1,6 @@
 import { ENV } from "@config/index";
 
+// swagger configuration
 export const swaggerOptions = {
   definition: {
     openapi: "3.0.0",

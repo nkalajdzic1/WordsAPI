@@ -1,3 +1,5 @@
+// swagger schemas for the words service
+
 /**
  * @swagger
  *  components:

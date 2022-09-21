@@ -1,6 +1,13 @@
 import { REQUEST_METHODS } from "@constants/index";
 import { IRoute } from "@interfaces/index";
 
+/**
+ *
+ * @param {'get' | 'post' | 'put' | 'patch' | 'delete' | 'options'} requestMethod
+ *        type of request
+ * @param {string} path route path
+ * @returns decorator
+ */
 const createRouteDecorator = (requestMethod: string, path: string) => {
   // `target` equals our class, `propertyKey` equals our decorated method name
   return (target: any, propertyKey: string): void => {
@@ -25,7 +32,8 @@ const createRouteDecorator = (requestMethod: string, path: string) => {
   };
 };
 
-//  route decorators
+// web api route decorators (get, post, put, ...)
+
 export const Get = (path: string): any =>
   createRouteDecorator(REQUEST_METHODS.GET, path);
 

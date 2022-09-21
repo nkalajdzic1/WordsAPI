@@ -5,6 +5,7 @@ import { Controller, Get } from "@decorators/index";
 @Controller("/health")
 export class HealthController {
   /**
+   * @description get service health
    * @param {Request} _req express http request
    * @param {Response} res express htpp response
    * @returns {Object} data of the server health
@@ -24,7 +25,7 @@ export class HealthController {
    *         description: Internal Server error
    */
   @Get("/")
-  public get = (_req: Request, res: Response): Object =>
+  public getHealth = (_req: Request, res: Response): Object =>
     res.json({
       uptime: process.uptime(),
       message: "OK",

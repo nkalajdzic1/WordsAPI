@@ -34,7 +34,7 @@ export class Injector {
           `${routePrefix}${prefix}${route.path}`,
           (...params: any[]) => {
             // Execute our method for this path and pass our express request and response object.
-            (instance as any)[route.requestMethod](...params);
+            (instance as any)[route.methodName](...params);
           }
         );
       });

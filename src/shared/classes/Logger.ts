@@ -1,3 +1,4 @@
+// server logger class
 export class Logger {
   static info = (message: string): void => {
     console.log(`[info]: ${message}`);
